@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Pokédex</title>
+</head>
+<body>
+
+<nav class="menu">
+    <section class="menu_container">
+
+        <img src="img/logo.png" alt="Pokédex Logo" class="poke_logo">
+
+        <ul class="menu_links">
+
+            <li class="menu_item">
+                <a href="#" class="menu_link">Home</a>
+            </li>
+
+            <!-- GENERATION -->
+            <li class="menu_item menu_item--show">
+                <a href="#" class="menu_link">
+                    Generation
+                    <img src="img/arrow.svg" class="menu_arrow">
+                </a>
+
+                <ul class="menu_nesting generations_menu">
+                    <li><a href="#" class="boton-header generation all" id="ver-todas">Ver todas</a></li>
+                    <li><a href="#" class="boton-header generation" id="kanto">Kanto</a></li>
+                    <li><a href="#" class="boton-header generation" id="johto">Johto</a></li>
+                    <li><a href="#" class="boton-header generation" id="hoenn">Hoenn</a></li>
+                    <li><a href="#" class="boton-header generation" id="sinnoh">Sinnoh</a></li>
+                    <li><a href="#" class="boton-header generation" id="unova">Unova</a></li>
+                    <li><a href="#" class="boton-header generation" id="kalos">Kalos</a></li>
+                    <li><a href="#" class="boton-header generation" id="alola">Alola</a></li>
+                    <li><a href="#" class="boton-header generation" id="galar">Galar</a></li>
+                    <li><a href="#" class="boton-header generation" id="paldea">Paldea</a></li>
+                    <li><a href="#" class="boton-header generation" id="hisui">Hisui</a></li>
+                </ul>
+            </li>
+
+            <!-- TYPE -->
+            <li class="menu_item menu_item--show">
+                <a href="#" class="menu_link">
+                    Type
+                    <img src="img/arrow.svg" class="menu_arrow">
+                </a>
+
+                <ul class="menu_nesting types_menu">
+                    <li><a href="#" class="boton-header type all" id="ver-todos">Ver todos</a></li>
+                    <li><a href="#" class="boton-header type normal" id="normal">Normal</a></li>
+                    <li><a href="#" class="boton-header type fire" id="fire">Fire</a></li>
+                    <li><a href="#" class="boton-header type water" id="water">Water</a></li>
+                    <li><a href="#" class="boton-header type grass" id="grass">Grass</a></li>
+                    <li><a href="#" class="boton-header type electric" id="electric">Electric</a></li>
+                    <li><a href="#" class="boton-header type ice" id="ice">Ice</a></li>
+                    <li><a href="#" class="boton-header type fighting" id="fighting">Fighting</a></li>
+                    <li><a href="#" class="boton-header type poison" id="poison">Poison</a></li>
+                    <li><a href="#" class="boton-header type ground" id="ground">Ground</a></li>
+                    <li><a href="#" class="boton-header type flying" id="flying">Flying</a></li>
+                    <li><a href="#" class="boton-header type psychic" id="psychic">Psychic</a></li>
+                    <li><a href="#" class="boton-header type bug" id="bug">Bug</a></li>
+                    <li><a href="#" class="boton-header type rock" id="rock">Rock</a></li>
+                    <li><a href="#" class="boton-header type ghost" id="ghost">Ghost</a></li>
+                    <li><a href="#" class="boton-header type dragon" id="dragon">Dragon</a></li>
+                    <li><a href="#" class="boton-header type dark" id="dark">Dark</a></li>
+                    <li><a href="#" class="boton-header type steel" id="steel">Steel</a></li>
+                    <li><a href="#" class="boton-header type fairy" id="fairy">Fairy</a></li>
+                </ul>
+            </li>
+
+            <li class="menu_item">
+                <a href="#" class="menu_link">Contact</a>
+            </li>
+
+        </ul>
+
+        <div class="menu_hamburger">
+            <img src="img/menu.svg" class="menu_img">
+        </div>
+
+    </section>
+</nav>
+
+<main>
+
+    <div id="todos">
+        <div class="pokemon-todos" id="lista-pokemon">       
+        </div>
+    </div>
+
+</main>
+<script src="./js/app.js"></script>
+<script src="./js/menu.js"></script>
+</body>
+</html>
