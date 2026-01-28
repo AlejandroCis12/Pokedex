@@ -1,6 +1,8 @@
 // ========== MÓDULO DE POKÉMON ==========
 (function() {
     const listaPokemon = document.querySelector('#lista-pokemon');
+    const buscadorInput = document.getElementById('buscador-pokemon');
+    const limpiarBtn = document.getElementById('limpiar-busqueda');
     
     // Selectores específicos para tu estructura
     const botonesTipo = document.querySelectorAll('.boton-header:not(.generation)');
@@ -14,8 +16,12 @@
     let cargaEnProgreso = false;
     
     // Botón activo actual
-    let filtroActivo = 'ver-todas'; // Nota: 'ver-todas' en lugar de 'ver-todos'
-    let tipoFiltroActivo = 'tipo'; // 'tipo' o 'generacion'
+    let filtroActivo = 'ver-todas';
+    let tipoFiltroActivo = 'tipo';
+    
+    // Variables para el buscador
+    let busquedaActual = '';
+    let timeoutBusqueda;
 
     // Definición de generaciones de Pokémon
     const generaciones = [
@@ -101,6 +107,13 @@
             filtroActivo = botonClickeado.id;
             tipoFiltroActivo = tipo;
         }
+        
+        // Limpiar la búsqueda cuando cambias de filtro
+        if (buscadorInput && limpiarBtn) {
+            buscadorInput.value = '';
+            limpiarBtn.classList.remove('visible');
+            busquedaActual = '';
+        }
     }
 
     // Filtrar Pokémon por tipo
@@ -139,6 +152,19 @@
         }
         
         mostrarPokemons(pokemonsFiltrados);
+    }
+
+    function buscarPokemon(termino) {
+        const terminoLower = termino.toLowerCase();
+        
+        return todosPokemon.filter(poke => {
+            const enNombre = poke.name.toLowerCase().includes(terminoLower);
+            const enID = poke.id.toString().includes(termino);
+            const enTipos = poke.types.some(type => 
+                type.type.name.toLowerCase().includes(terminoLower)
+            );
+            return enNombre || enID || enTipos;
+        });
     }
 
     // Cargar todos los Pokémon con cache
@@ -261,7 +287,7 @@
             // Solo configurar si no es un botón de generación
             if (!boton.classList.contains('generation')) {
                 boton.addEventListener('click', (event) => {
-                    event.preventDefault(); // Prevenir navegación
+                    event.preventDefault();
                     if (!pokemonCargado) return;
                     
                     actualizarBotonesActivos(event.currentTarget, 'tipo');
@@ -281,7 +307,7 @@
     function configurarFiltrosGeneracion() {
         botonesGeneracion.forEach(boton => {
             boton.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevenir navegación
+                event.preventDefault();
                 if (!pokemonCargado) return;
                 
                 actualizarBotonesActivos(event.currentTarget, 'generacion');
@@ -302,11 +328,85 @@
         });
     }
 
+    function configurarBuscador() {
+        // Verificar que los elementos existen
+        if (!buscadorInput || !limpiarBtn) {
+            console.log('Buscador: Elementos no encontrados');
+            return;
+        }
+        
+        console.log('Buscador: Configurando...');
+        
+        // Evento: escribir en el input
+        buscadorInput.addEventListener('input', (event) => {
+            const termino = event.target.value.trim();
+            
+            console.log('Buscando:', termino);
+            
+            // Mostrar/ocultar botón X
+            if (termino === '') {
+                limpiarBtn.classList.remove('visible');
+            } else {
+                limpiarBtn.classList.add('visible');
+            }
+            
+            // Debouncing
+            clearTimeout(timeoutBusqueda);
+            timeoutBusqueda = setTimeout(() => {
+                if (!pokemonCargado) {
+                    console.log('Pokemon no cargados aun');
+                    return;
+                }
+                
+                busquedaActual = termino;
+                
+                if (termino === '') {
+                    // Si esta vacio, volver al filtro actual
+                    aplicarFiltro();
+                } else {
+                    // Buscar Pokemon
+                    const resultados = buscarPokemon(termino);
+                    mostrarPokemons(resultados);
+                }
+            }, 300);
+        });
+        
+        // Evento: hacer clic en la X
+        limpiarBtn.addEventListener('click', () => {
+            console.log('Limpiando busqueda');
+            buscadorInput.value = '';
+            limpiarBtn.classList.remove('visible');
+            busquedaActual = '';
+            aplicarFiltro();
+            buscadorInput.focus();
+        });
+        
+        // Evento: Enter para buscar
+        buscadorInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                console.log('Enter presionado');
+                clearTimeout(timeoutBusqueda);
+                const termino = buscadorInput.value.trim();
+                busquedaActual = termino;
+                
+                if (termino === '') {
+                    aplicarFiltro();
+                } else {
+                    const resultados = buscarPokemon(termino);
+                    mostrarPokemons(resultados);
+                }
+            }
+        });
+    }
+
     // Inicializar
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('Inicializando Pokedex...');
+        
         cargarTodosPokemon();
         configurarFiltrosTipo();
         configurarFiltrosGeneracion();
+        configurarBuscador();
         
         // Configurar botón "Ver todas" como activo inicial
         const botonVerTodas = document.getElementById('ver-todas');

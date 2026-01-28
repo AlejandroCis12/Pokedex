@@ -87,6 +87,39 @@ main {
     height: 45px;
 }
 
+
+.search-container {
+    position: relative;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+#buscador-pokemon {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 25px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+}
+
+.clear-button {
+    display: none;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.clear-button.visible {
+    display: block;
+}
+
 .menu_nesting,
 .menu_nesting li {
     list-style: none;
@@ -461,64 +494,121 @@ main {
     box-shadow: 0 4px 12px rgba(100, 181, 246, 0.3);
 }
 
-@media (min-width: 901px) {
-    .menu_hamburger {
-        display: none;
-    }
-    
-    .theme-button {
-        order: 2;
-    }
-}
+/* ============== SOLO MÓVILES ============== */
+/* Todo lo de abajo solo afecta a móviles, computadora queda igual */
 
 @media (max-width: 900px) {
+    /* Header responsive */
+    .menu {
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+    
+    .menu_container {
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    .poke_logo {
+        height: 35px;
+        order: 1;
+    }
+    
     .menu_hamburger {
         display: flex;
         align-items: center;
-        order: 3;
+        order: 4;
+        padding: 8px;
     }
-
-    .theme-button {
+    
+    .menu_img {
+        width: 28px;
+    }
+    
+    .search-container {
         order: 2;
+        margin: 0 10px;
+        flex-grow: 1;
+        max-width: 200px;
+    }
+    
+    #buscador-pokemon {
+        padding: 6px 12px;
+        font-size: 14px;
+        height: 34px;
+    }
+    
+    .search-button {
+        right: 10px;
+        font-size: 16px;
+    }
+    
+    .theme-button {
+        order: 3;
         margin-right: 0;
         padding: 6px 12px;
-        font-size: 13px;
+        font-size: 12px;
+        min-width: auto;
     }
-
+    
+    .theme-button .theme-text {
+        display: none;
+    }
+    
+    /* Menú móvil */
     .menu_links {
         position: fixed;
-        top: 70px;
+        top: 60px;
         right: 0;
         width: 100%;
-        max-width: 360px;
-        height: calc(100vh - 70px);
+        max-width: 100%;
+        height: calc(100vh - 60px);
         background-color: #b20202;
         flex-direction: column;
         transform: translateX(100%);
-        transition: transform 0.4s ease;
+        transition: transform 0.3s ease;
         overflow-y: auto;
         z-index: 999;
+        padding-top: 0;
     }
-
+    
     .menu_links--show {
         transform: translateX(0);
     }
-
+    
     .menu_item {
         height: auto;
+        width: 100%;
         --clip: none;
-    }
-
-    .menu_link {
-        padding: 20px 25px;
-        height: auto;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-
+    
+    .menu_link {
+        padding: 18px 20px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 15px;
+    }
+    
+    .menu_link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
     .menu_arrow {
         margin-left: auto;
+        transition: transform 0.3s;
     }
-
+    
+    .menu_item--active .menu_arrow {
+        transform: rotate(180deg);
+    }
+    
     .menu_nesting {
         position: static;
         transform: none;
@@ -526,66 +616,165 @@ main {
         display: none;
         border-radius: 0;
         background-color: rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        width: 100%;
     }
-
+    
     .menu_item--active .menu_nesting {
         display: grid;
-        gap: 15px;
-        padding: 15px;
     }
-
+    
     .generations_menu {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
         max-width: 100%;
-        padding: 12px;
-        gap: 12px;
     }
-
+    
     .types_menu {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
         max-width: 100%;
-        padding: 12px;
-        gap: 12px;
     }
     
-    .pokemon-todos {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 0.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .menu_container {
-        width: 95%;
-    }
-    
-    .theme-button .theme-text {
-        display: none;
-    }
-    
-    .theme-button {
-        padding: 8px;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
+    .generation,
+    .type {
+        padding: 12px 8px;
+        font-size: 13px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
     
+    /* Main content ajustado para header fijo */
+    main {
+        padding: 1rem;
+        padding-top: 80px; /* Espacio para el header fijo */
+    }
+    
+    /* Grid de Pokémon mejorado para móviles */
     .pokemon-todos {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 0.5rem 0;
     }
     
     .pokemon {
         padding-block: 0.75rem;
+        border-radius: 0.75rem;
+        min-height: 200px;
+    }
+    
+    .pokemon-img {
+        padding-inline: 0.5rem;
+    }
+    
+    .pokemon-img img {
+        max-width: 90px;
+    }
+    
+    .pokemon-info {
+        padding-inline: 0.5rem;
+        gap: 0.5rem;
     }
     
     .pokemon-nombre {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+    
+    .pokemon-id {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    .pokemon-tipos {
+        gap: 0.3rem;
+        font-size: 0.65rem;
+    }
+    
+    .tipo {
+        padding: 0.25rem 0.5rem;
+        min-width: 60px;
+    }
+    
+    .pokemon-stats {
+        gap: 0.4rem;
+        font-size: 0.7rem;
+    }
+    
+    .stat {
+        padding: 0.25rem 0.5rem;
     }
     
     .pokemon-id-back {
-        font-size: 6rem;
+        font-size: 5rem;
+    }
+    
+    /* Mejoras táctiles */
+    button, .generation, .type, .pokemon {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .pokemon:active {
+        transform: scale(0.98);
+    }
+    
+    .generation:active,
+    .type:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Pantallas muy pequeñas (menos de 400px) */
+@media (max-width: 400px) {
+    .pokemon-todos {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .menu_container {
+        padding: 0 10px;
+    }
+    
+    .search-container {
+        max-width: 160px;
+    }
+    
+    #buscador-pokemon {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+    
+    .theme-button {
+        padding: 8px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .generations_menu,
+    .types_menu {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tablets (mantiene diseño de computadora pero con ajustes menores) */
+@media (min-width: 901px) and (max-width: 1100px) {
+    /* Solo pequeños ajustes para tablets, sin cambiar el diseño */
+    .menu_container {
+        width: 95%;
+    }
+    
+    .menu_link {
+        padding: 0 20px;
+    }
+    
+    main {
+        padding: 1.5rem;
     }
 }
 
@@ -641,4 +830,28 @@ main {
 :focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
+}
+
+/* Mejoras de accesibilidad para móviles */
+@media (max-width: 900px) {
+    /* Asegurar que los elementos sean táctiles */
+    button, 
+    input[type="button"], 
+    input[type="submit"], 
+    .generation, 
+    .type, 
+    .pokemon {
+        min-height: 44px;
+    }
+    
+    input, 
+    select, 
+    textarea {
+        font-size: 16px; /* Evita zoom automático en iOS */
+    }
+    
+    /* Scroll suave */
+    html {
+        scroll-behavior: smooth;
+    }
 }
