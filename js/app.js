@@ -17,13 +17,13 @@
     let filtroActivo = 'ver-todas'; // Nota: 'ver-todas' en lugar de 'ver-todos'
     let tipoFiltroActivo = 'tipo'; // 'tipo' o 'generacion'
 
-    // Definición de generaciones - AJUSTADO a tu HTML (nota: Unova en lugar de Teselia)
+    // Definición de generaciones de Pokémon
     const generaciones = [
         { id: 'kanto', inicio: 1, fin: 151, nombre: 'Kanto' },
         { id: 'johto', inicio: 152, fin: 251, nombre: 'Johto' },
         { id: 'hoenn', inicio: 252, fin: 386, nombre: 'Hoenn' },
         { id: 'sinnoh', inicio: 387, fin: 493, nombre: 'Sinnoh' },
-        { id: 'unova', inicio: 494, fin: 649, nombre: 'Unova' }, // Nota: unova no unova
+        { id: 'unova', inicio: 494, fin: 649, nombre: 'Unova' },
         { id: 'kalos', inicio: 650, fin: 721, nombre: 'Kalos' },
         { id: 'alola', inicio: 722, fin: 809, nombre: 'Alola' },
         { id: 'galar', inicio: 810, fin: 898, nombre: 'Galar' },
