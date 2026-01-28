@@ -37,19 +37,24 @@
         { id: 'hisui', inicio: 899, fin: 905, nombre: 'Hisui' }
     ];
 
-    // Loading state
+    // Loading state optimizado para móvil
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'loading-indicator';
     loadingIndicator.innerHTML = `
         <div class="spinner"></div>
         <p>Cargando Pokémon...</p>
+        <p class="loading-progress">0/151</p>
     `;
     loadingIndicator.style.cssText = `
         text-align: center;
         padding: 40px;
         font-size: 1.2rem;
         color: #666;
+        grid-column: 1 / -1;
     `;
+
+    // Elemento para mostrar progreso
+    const progressText = loadingIndicator.querySelector('.loading-progress');
 
     function obtenerGeneracion(id) {
         const generacion = generaciones.find(gen => 
@@ -79,7 +84,7 @@
     // Manejar errores
     function mostrarError(mensaje) {
         listaPokemon.innerHTML = `
-            <div class="error-mensaje" style="text-align: center; padding: 40px; color: #d32f2f;">
+            <div class="error-mensaje" style="text-align: center; padding: 40px; color: #d32f2f; grid-column: 1 / -1;">
                 <h3>Error</h3>
                 <p>${mensaje}</p>
                 <button id="reintentar-btn" style="margin-top: 20px; padding: 10px 20px; background: #1976d2; color: white; border: none; border-radius: 5px; cursor: pointer;">
@@ -167,7 +172,7 @@
         });
     }
 
-    // Cargar todos los Pokémon con cache
+    // Cargar todos los Pokémon OPTIMIZADO PARA MÓVIL
     async function cargarTodosPokemon() {
         if (pokemonCargado && todosPokemon.length > 0) {
             aplicarFiltro();
@@ -180,47 +185,50 @@
         mostrarLoading();
 
         try {
-            // Crear array de promesas
+            // PARA MÓVIL: Solo cargar la primera generación inicialmente (151 Pokémon)
+            const pokemonInicial = 151;
             const promises = [];
-            const maxPokemon = 1025;
             
-            // Dividir en lotes para no saturar
-            const lotes = [];
-            for (let i = 1; i <= maxPokemon; i += 50) {
-                const lote = [];
-                for (let j = i; j < i + 50 && j <= maxPokemon; j++) {
-                    lote.push(fetch(URL + j).then(r => {
-                        if (!r.ok) throw new Error(`Error ${r.status} cargando Pokémon ${j}`);
-                        return r.json();
-                    }));
-                }
-                lotes.push(lote);
+            // Crear promesas para los primeros 151 Pokémon
+            for (let i = 1; i <= pokemonInicial; i++) {
+                promises.push(
+                    fetch(URL + i)
+                        .then(r => {
+                            if (!r.ok) throw new Error(`Error ${r.status}`);
+                            return r.json();
+                        })
+                        .then(data => {
+                            // Actualizar progreso en tiempo real
+                            if (progressText) {
+                                progressText.textContent = `${todosPokemon.length + 1}/${pokemonInicial}`;
+                            }
+                            return data;
+                        })
+                );
             }
 
-            // Procesar lotes secuencialmente
-            for (const lote of lotes) {
-                const resultados = await Promise.allSettled(lote);
-                resultados.forEach(resultado => {
-                    if (resultado.status === 'fulfilled') {
-                        todosPokemon.push(resultado.value);
-                    } else {
-                        console.warn('Error en Pokémon:', resultado.reason);
-                    }
-                });
-                
-                // Mostrar progreso
-                if (todosPokemon.length % 100 === 0) {
-                    loadingIndicator.querySelector('p').textContent = 
-                        `Cargando Pokémon... ${todosPokemon.length}/${maxPokemon}`;
+            // Esperar TODOS los fetchs con Promise.allSettled
+            const resultados = await Promise.allSettled(promises);
+            
+            // Procesar resultados
+            resultados.forEach((resultado, index) => {
+                if (resultado.status === 'fulfilled') {
+                    todosPokemon.push(resultado.value);
+                } else {
+                    console.warn(`Error en Pokémon ${index + 1}:`, resultado.reason);
+                    // Aún así continuamos con los demás
                 }
-            }
+            });
 
             // Ordenar por ID
             todosPokemon.sort((a, b) => a.id - b.id);
             pokemonCargado = true;
             
-            // Aplicar filtro inicial
+            // Aplicar filtro inicial (mostrará solo los 151 cargados)
             aplicarFiltro();
+            
+            // CARGAR EL RESTO EN SEGUNDO PLANO (sin bloquear la UI)
+            setTimeout(() => cargarRestoPokemon(), 1000);
             
         } catch (error) {
             console.error('Error cargando Pokémon:', error);
@@ -231,6 +239,48 @@
         }
     }
 
+    // Función para cargar el resto de Pokémon en segundo plano
+    async function cargarRestoPokemon() {
+        if (todosPokemon.length >= 1025) return;
+        
+        console.log('Cargando el resto de Pokémon en segundo plano...');
+        
+        const inicio = 152;
+        const fin = 1025;
+        
+        // Cargar en lotes pequeños para no saturar móvil
+        const tamanoLote = 50;
+        
+        for (let i = inicio; i <= fin; i += tamanoLote) {
+            const lotePromises = [];
+            const limiteLote = Math.min(i + tamanoLote - 1, fin);
+            
+            for (let j = i; j <= limiteLote; j++) {
+                lotePromises.push(
+                    fetch(URL + j)
+                        .then(r => r.ok ? r.json() : null)
+                        .catch(() => null) // Ignorar errores en carga en segundo plano
+                );
+            }
+            
+            const resultadosLote = await Promise.allSettled(lotePromises);
+            
+            resultadosLote.forEach(resultado => {
+                if (resultado.status === 'fulfilled' && resultado.value) {
+                    todosPokemon.push(resultado.value);
+                }
+            });
+            
+            // Ordenar periódicamente
+            todosPokemon.sort((a, b) => a.id - b.id);
+            
+            // Pausa entre lotes para no saturar
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        
+        console.log('Todos los Pokémon cargados en segundo plano');
+    }
+
     // Función para mostrar múltiples Pokémon
     function mostrarPokemons(pokemons) {
         ocultarLoading();
@@ -238,17 +288,51 @@
         
         if (pokemons.length === 0) {
             listaPokemon.innerHTML = `
-                <div class="sin-resultados" style="text-align: center; padding: 40px;">
+                <div class="sin-resultados" style="text-align: center; padding: 40px; grid-column: 1 / -1;">
                     <p>No se encontraron Pokémon con ese filtro.</p>
                 </div>
             `;
             return;
         }
 
-        pokemons.forEach(poke => mostrarPokemon(poke));
+        // Para móvil: mostrar máximo 50 Pokémon inicialmente
+        const mostrarInicialmente = window.innerWidth <= 768 ? 50 : pokemons.length;
+        const pokemonsAMostrar = pokemons.slice(0, mostrarInicialmente);
+        
+        pokemonsAMostrar.forEach(poke => mostrarPokemon(poke));
+        
+        // Si hay más Pokémon y estamos en móvil, agregar botón "Ver más"
+        if (pokemons.length > mostrarInicialmente && window.innerWidth <= 768) {
+            const verMasBtn = document.createElement('button');
+            verMasBtn.className = 'ver-mas-btn';
+            verMasBtn.textContent = `Ver más (${pokemons.length - mostrarInicialmente} restantes)`;
+            verMasBtn.style.cssText = `
+                grid-column: 1 / -1;
+                padding: 15px;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                cursor: pointer;
+                margin: 20px auto;
+                display: block;
+                max-width: 300px;
+            `;
+            
+            verMasBtn.addEventListener('click', () => {
+                // Mostrar el resto de Pokémon
+                for (let i = mostrarInicialmente; i < pokemons.length; i++) {
+                    mostrarPokemon(pokemons[i]);
+                }
+                verMasBtn.remove();
+            });
+            
+            listaPokemon.appendChild(verMasBtn);
+        }
     }
 
-    // Función individual para mostrar un Pokémon
+    // Función individual para mostrar un Pokémon (CLICKEABLE)
     function mostrarPokemon(poke) {
         let tipos = poke.types.map(type => 
             `<p class="${type.type.name} tipo">${type.type.name}</p>`
@@ -256,6 +340,8 @@
 
         const div = document.createElement('div');
         div.classList.add('pokemon');
+        div.style.cursor = 'pointer';
+        
         div.innerHTML = `
             <p class="pokemon-id-back">#${poke.id}</p>
             <div class="pokemon-img">
@@ -278,18 +364,18 @@
                 </div>
             </div>
         `;
-
+        
+        // HACER LA TARJETA CLICKEABLE
         div.addEventListener('click', () => {
             window.location.href = `pokemon.html?id=${poke.id}`;
         });
-
+        
         listaPokemon.append(div);
     }
 
     // Configurar filtros por tipo
     function configurarFiltrosTipo() {
         botonesTipo.forEach(boton => {
-            // Solo configurar si no es un botón de generación
             if (!boton.classList.contains('generation')) {
                 boton.addEventListener('click', (event) => {
                     event.preventDefault();
@@ -298,7 +384,6 @@
                     actualizarBotonesActivos(event.currentTarget, 'tipo');
                     aplicarFiltro();
                     
-                    // Cerrar menú en móvil después de seleccionar
                     if (window.innerWidth <= 900) {
                         const menuLinks = document.querySelector('.menu_links');
                         menuLinks.classList.remove('menu_links--show');
@@ -318,12 +403,10 @@
                 actualizarBotonesActivos(event.currentTarget, 'generacion');
                 aplicarFiltro();
                 
-                // Cerrar menú en móvil después de seleccionar
                 if (window.innerWidth <= 900) {
                     const menuLinks = document.querySelector('.menu_links');
                     menuLinks.classList.remove('menu_links--show');
                     
-                    // Cerrar también el submenú de generaciones
                     const menuItem = event.currentTarget.closest('.menu_item--show');
                     if (menuItem) {
                         menuItem.classList.remove('menu_item--active');
@@ -334,51 +417,36 @@
     }
 
     function configurarBuscador() {
-        // Verificar que los elementos existen
         if (!buscadorInput || !limpiarBtn) {
             console.log('Buscador: Elementos no encontrados');
             return;
         }
         
-        console.log('Buscador: Configurando...');
-        
-        // Evento: escribir en el input
         buscadorInput.addEventListener('input', (event) => {
             const termino = event.target.value.trim();
             
-            console.log('Buscando:', termino);
-            
-            // Mostrar/ocultar botón X
             if (termino === '') {
                 limpiarBtn.classList.remove('visible');
             } else {
                 limpiarBtn.classList.add('visible');
             }
             
-            // Debouncing
             clearTimeout(timeoutBusqueda);
             timeoutBusqueda = setTimeout(() => {
-                if (!pokemonCargado) {
-                    console.log('Pokemon no cargados aun');
-                    return;
-                }
+                if (!pokemonCargado) return;
                 
                 busquedaActual = termino;
                 
                 if (termino === '') {
-                    // Si esta vacio, volver al filtro actual
                     aplicarFiltro();
                 } else {
-                    // Buscar Pokemon
                     const resultados = buscarPokemon(termino);
                     mostrarPokemons(resultados);
                 }
             }, 300);
         });
         
-        // Evento: hacer clic en la X
         limpiarBtn.addEventListener('click', () => {
-            console.log('Limpiando busqueda');
             buscadorInput.value = '';
             limpiarBtn.classList.remove('visible');
             busquedaActual = '';
@@ -386,10 +454,8 @@
             buscadorInput.focus();
         });
         
-        // Evento: Enter para buscar
         buscadorInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-                console.log('Enter presionado');
                 clearTimeout(timeoutBusqueda);
                 const termino = buscadorInput.value.trim();
                 busquedaActual = termino;
@@ -413,7 +479,6 @@
         configurarFiltrosGeneracion();
         configurarBuscador();
         
-        // Configurar botón "Ver todas" como activo inicial
         const botonVerTodas = document.getElementById('ver-todas');
         if (botonVerTodas) {
             botonVerTodas.classList.add('active');
