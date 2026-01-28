@@ -278,6 +278,11 @@
                 </div>
             </div>
         `;
+
+        div.addEventListener('click', () => {
+            window.location.href = `pokemon.html?id=${poke.id}`;
+        });
+
         listaPokemon.append(div);
     }
 
