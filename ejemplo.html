@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex - Detalles</title>
+    <link rel="stylesheet" href="./css/details.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* details.css - Estilo más "Pokémon" */
+
+/* RESET Y VARIABLES */
+:root {
+    --pokemon-red: #FF0000;
+    --pokemon-blue: #3B4CCA;
+    --pokemon-yellow: #FFDE00;
+    --pokemon-gray: #B3B3B3;
+    --pokemon-dark: #2A2A2A;
+    --card-bg: #FFFFFF;
+    --screen-bg: #88C070;
+    --border-color: #333333;
+    --type-grass: #78C850;
+    --type-fire: #F08030;
+    --type-water: #6890F0;
+    --shadow: 3px 3px 0px rgba(0,0,0,0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* HEADER TIPO POKÉDEX */
+.pokedex-header {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    background: var(--pokemon-red);
+    border-radius: 15px 15px 0 0;
+    padding: 15px;
+    box-shadow: var(--shadow);
+}
+
+.dex-top {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.red-light, .yellow-light, .green-light {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #000;
+}
+
+.red-light {
+    background: #FF5252;
+    box-shadow: 0 0 10px #FF5252;
+}
+
+.yellow-light {
+    background: #FFD700;
+    box-shadow: 0 0 10px #FFD700;
+}
+
+.green-light {
+    background: #4CAF50;
+    box-shadow: 0 0 10px #4CAF50;
+}
+
+.dex-screen {
+    background: var(--screen-bg);
+    border: 5px solid #000;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dex-button {
+    background: var(--pokemon-blue);
+    color: white;
+    border: 3px solid #000;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.dex-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 #000;
+}
+
+.dex-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.back-btn {
+    background: var(--pokemon-yellow);
+    color: #000;
+}
+
+.dex-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dex-counter {
+    text-align: center;
+    background: #000;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+}
+
+.counter-screen {
+    background: #8B0000;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 0 5px #FFD700;
+}
+
+.current-id {
+    color: #FFFFFF;
+}
+
+.counter-label {
+    font-size: 12px;
+    margin-top: 5px;
+    color: var(--pokemon-gray);
+}
+
+.prev-btn, .next-btn {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.theme-btn {
+    background: var(--pokemon-gray);
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    justify-content: center;
+}
+
+/* TARJETA PRINCIPAL */
+.pokemon-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 5px solid #000;
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.card-top {
+    background: linear-gradient(135deg, #4CAF50, #8BC34A);
+    padding: 30px;
+    border-bottom: 5px solid #000;
+}
+
+.pokemon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.name-display {
+    flex: 1;
+}
+
+.pokemon-name {
+    font-size: 48px;
+    font-weight: 900;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+    margin-bottom: 5px;
+}
+
+.id-display {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    background: rgba(255,255,255,0.8);
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.type-badges {
+    display: flex;
+    gap: 10px;
+}
+
+.type-badge {
+    padding: 10px 25px;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 16px;
+    border: 3px solid #000;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    min-width: 120px;
+    text-align: center;
+}
+
+.type-badge.grass {
+    background: var(--type-grass);
+}
+
+.type-badge.poison {
+    background: #A040A0;
+}
+
+.type-badge.fire {
+    background: var(--type-fire);
+}
+
+.type-badge.water {
+    background: var(--type-water);
+}
+
+/* IMAGEN */
+.image-display {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.image-frame {
+    flex: 2;
+    min-width: 300px;
+    background: white;
+    border: 5px solid #000;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+}
+
+.main-sprite {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+    transition: transform 0.3s;
+}
+
+.main-sprite:hover {
+    transform: scale(1.05);
+}
+
+.sprite-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.sprite-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    background: var(--pokemon-gray);
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+}
+
+.sprite-btn.active {
+    background: var(--pokemon-red);
+    transform: scale(1.1);
+}
+
+.variant-thumbnails {
+    flex: 1;
+    min-width: 200px;
+    background: white;
+    border: 3px solid #000;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.variant-thumbnails h3 {
+    color: #000;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.thumbnails-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.thumbnail-item {
+    background: #f0f0f0;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.thumbnail-item:hover {
+    background: var(--pokemon-yellow);
+    transform: translateY(-3px);
+}
+
+.thumbnail-item img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* PARTE INFERIOR DE LA TARJETA */
+.card-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+}
+
+@media (max-width: 900px) {
+    .card-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+.info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* SECCIONES DE INFORMACIÓN */
+.info-section {
+    background: #f8f8f8;
+    border: 3px solid #000;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+}
+
+.section-title {
+    color: var(--pokemon-blue);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    border-bottom: 2px solid var(--pokemon-blue);
+    padding-bottom: 10px;
+}
+
+/* DATOS BÁSICOS */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.data-item {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.data-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.data-label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.data-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.abilities-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ability {
+    background: var(--pokemon-blue);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.hidden-ability {
+    background: #FF9800;
+}
+
+.gender i {
+    margin: 0 5px;
+    font-size: 16px;
+}
+
+.gender .fa-mars {
+    color: #2196F3;
+}
+
+.gender .fa-venus {
+    color: #E91E63;
+}
+
+/* ESTADÍSTICAS */
+.stats-display {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-name {
+    width: 100px;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    width: 40px;
+    font-weight: bold;
+    text-align: center;
+    background: #000;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.stat-bar {
+    flex: 1;
+    height: 20px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.stat-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Colores por stat */
+.stat-fill.hp { background: #FF5959; }
+.stat-fill.attack { background: #F5AC78; }
+.stat-fill.defense { background: #FAE078; }
+
+.stat-fill.speed { background: #FA92B2; }
+
+.stats-summary {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #000;
+    text-align: center;
+}
+
+.total-stats {
+    font-size: 18px;
+    color: #333;
+}
+
+.total-stats strong {
+    color: var(--pokemon-red);
+    font-size: 24px;
+}
+
+/* DESCRIPCIÓN */
+.pokedex-entry {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.habitat-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--pokemon-blue);
+    font-weight: bold;
+}
+
+/* EVOLUCIONES */
+.evolution-line {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.evolution-stage {
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+}
+
+.evolution-stage img {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border: 3px solid #000;
+    border-radius: 50%;
+    padding: 10px;
+    transition: all 0.3s;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+}
+
+.evolution-stage img:hover {
+    transform: scale(1.1) rotate(5deg);
+    border-color: var(--pokemon-red);
+}
+
+.evolution-arrow {
+    font-size: 24px;
+    color: #000;
+    font-weight: bold;
+}
+
+/* CURIOSIDADES */
+.trivia-section {
+    background: linear-gradient(135deg, #FFF3CD, #FFEAA7);
+}
+
+.trivia-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.trivia-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--pokemon-blue);
+}
+
+.trivia-icon {
+    font-size: 24px;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* SECCIÓN EXTRA */
+.extra-section {
+    margin: 0 30px 30px;
+    background: #f0f0f0;
+    border: 3px solid #000;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.games-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: thin;
+}
+
+.game-icon {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    background: white;
+    border: 2px solid #000;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    transition: all 0.3s;
+}
+
+.game-icon:hover {
+    transform: rotate(-5deg) scale(1.1);
+    background: var(--pokemon-yellow);
+}
+
+/* FOOTER */
+.card-footer {
+    background: #333;
+    padding: 20px 30px;
+    border-top: 5px solid #000;
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-btn {
+    background: var(--pokemon-blue);
+    color: white;
+    border: 3px solid #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.footer-btn:hover {
+    background: var(--pokemon-red);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 0 #000;
+}
+
+.compare-btn {
+    background: #4CAF50;
+}
+
+.favorite-btn {
+    background: #FF9800;
+}
+
+.share-btn {
+    background: #9C27B0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .pokemon-name {
+        font-size: 32px;
+    }
+    
+    .image-display {
+        flex-direction: column;
+    }
+    
+    .nav-buttons {
+        flex-direction: column;
+    }
+    
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .footer-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ANIMACIONES ESPECIALES */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes typeGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+}
+
+/* APLICAR ANIMACIONES */
+.red-light {
+    animation: blink 2s infinite;
+}
+
+.yellow-light {
+    animation: blink 2s infinite 0.5s;
+}
+
+.green-light {
+    animation: blink 2s infinite 1s;
+}
+
+.pokemon-card {
+    animation: slideIn 0.5s ease-out;
+}
+
+.type-badge {
+    animation: typeGlow 3s infinite;
+}
+
+/* SCROLLBAR PERSONALIZADA */
+.games-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.games-scroll::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 4px;
+}
+
+.games-scroll::-webkit-scrollbar-thumb {
+    background: var(--pokemon-red);
+    border-radius: 4px;
+}
+
+.games-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--pokemon-blue);
+}
+    </style>
+</head>
+<body class="pokemon-detail-page">
+
+    <!-- Header tipo Pokédex -->
+    <div class="pokedex-header">
+        <div class="dex-top">
+            <div class="red-light"></div>
+            <div class="yellow-light"></div>
+            <div class="green-light"></div>
+        </div>
+        
+        <div class="dex-screen">
+            <div class="nav-buttons">
+                <a href="index.html" class="dex-button back-btn">
+                    <i class="fas fa-chevron-left"></i>
+                    <span>POKÉDEX</span>
+                </a>
+                
+                <div class="dex-controls">
+                    <button class="dex-button prev-btn" id="prev-btn">
+                        <i class="fas fa-caret-left"></i>
+                    </button>
+                    
+                    <div class="dex-counter">
+                        <div class="counter-screen">
+                            <span class="current-id" id="current-id">001</span>
+                            <span class="total-pokemon">/1025</span>
+                        </div>
+                        <div class="counter-label">N° POKÉMON</div>
+                    </div>
+                    
+                    <button class="dex-button next-btn" id="next-btn">
+                        <i class="fas fa-caret-right"></i>
+                    </button>
+                </div>
+                
+                <button class="dex-button theme-btn" id="theme-btn">
+                    <i class="fas fa-adjust"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="detail-content">
+        
+        <!-- Tarjeta tipo Pokédex -->
+        <div class="pokemon-card">
+            <!-- Parte superior de la tarjeta -->
+            <div class="card-top">
+                <div class="pokemon-header">
+                    <div class="name-display">
+                        <h1 class="pokemon-name" id="pokemon-name">BULBASAUR</h1>
+                        <div class="id-display">N.° <span id="pokemon-id">001</span></div>
+                    </div>
+                    
+                    <div class="type-badges" id="type-badges">
+                        <!-- Se llena con JS -->
+                        <span class="type-badge grass">PLANTA</span>
+                        <span class="type-badge poison">VENENO</span>
+                    </div>
+                </div>
+                
+                <!-- Imagen central -->
+                <div class="image-display">
+                    <div class="image-frame">
+                        <img src="" alt="Bulbasaur" id="main-sprite" class="main-sprite">
+                        <div class="sprite-buttons">
+                            <button class="sprite-btn active" data-form="normal">
+                                <i class="fas fa-circle"></i>
+                            </button>
+                            <button class="sprite-btn" data-form="shiny">
+                                <i class="fas fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Miniaturas de variantes -->
+                    <div class="variant-thumbnails">
+                        <h3><i class="fas fa-layer-group"></i> Otras Formas</h3>
+                        <div class="thumbnails-grid" id="thumbnails-grid">
+                            <!-- Se llena con JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Parte inferior de la tarjeta - Información -->
+            <div class="card-bottom">
+                
+                <!-- Columna izquierda -->
+                <div class="info-column left-col">
+                    <!-- Datos básicos -->
+                    <div class="info-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-clipboard-check"></i>
+                            DATOS
+                        </h3>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <span class="data-label">ALTURA</span>
+                                <span class="data-value" id="height">0.7 m</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="data-label">PESO</span>
+                                <span class="data-value" id="weight">6.9 kg</span>
+                            </div>
+                            <div class="data-item full-width">
+                                <span class="data-label">HABILIDADES</span>
+                                <div class="abilities-list" id="abilities-list">
+                                    <span class="ability">Espesura</span>
+                                    <span class="ability hidden-ability">Clorofila</span>
+                                </div>
+                            </div>
+                            <div class="data-item">
+                                <span class="data-label">GRUPO HUEVO</span>
+                                <span class="data-value" id="egg-group">Monstruo/Planta</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="data-label">GÉNERO</span>
+                                <span class="data-value gender">
+                                    <i class="fas fa-mars"></i> 87.5%
+                                    <i class="fas fa-venus"></i> 12.5%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Estadísticas -->
+                    <div class="info-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-chart-simple"></i>
+                            ESTADÍSTICAS
+                        </h3>
+                        <div class="stats-display" id="stats-display">
+                            <!-- Se llena con JS -->
+                        </div>
+                        <div class="stats-summary">
+                            <span class="total-stats">
+                                PUNTOS BASE TOTAL: <strong id="total-base">318</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Columna derecha -->
+                <div class="info-column right-col">
+                    <!-- Descripción -->
+                    <div class="info-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-book"></i>
+                            ENTRADA POKÉDEX
+                        </h3>
+                        <div class="pokedex-entry">
+                            <p id="pokedex-entry">
+                                Un Pokémon semilla que planta su semilla en el lomo al nacer. 
+                                La semilla crece lentamente.
+                            </p>
+                            <div class="habitat-info">
+                                <i class="fas fa-location-dot"></i>
+                                <span id="habitat">Habitat: Pradera</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Evoluciones -->
+                    <div class="info-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-arrow-right-arrow-left"></i>
+                            CADENA EVOLUTIVA
+                        </h3>
+                        <div class="evolution-line" id="evolution-line">
+                            <!-- Se llena con JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Curiosidades -->
+                    <div class="info-section trivia-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-lightbulb"></i>
+                            DATOS CURIOSOS
+                        </h3>
+                        <div class="trivia-box">
+                            <div class="trivia-item">
+                                <div class="trivia-icon">①</div>
+                                <p>Es el Pokémon #001 en la Pokédex Nacional</p>
+                            </div>
+                            <div class="trivia-item">
+                                <div class="trivia-icon">🎮</div>
+                                <p>Apareció por primera vez en Pokémon Rojo/Verde (1996)</p>
+                            </div>
+                            <div class="trivia-item">
+                                <div class="trivia-icon">🌱</div>
+                                <p>Su nombre viene de "bulb" (bulbo) y "dinosaur" (dinosaurio)</p>
+                            </div>
+                            <div class="trivia-item">
+                                <div class="trivia-icon">⚡</div>
+                                <p>Evoluciona a Ivysaur al llegar al nivel 16</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección extra: Apariciones -->
+            <div class="extra-section">
+                <h3 class="section-title">
+                    <i class="fas fa-gamepad"></i>
+                    APARECE EN
+                </h3>
+                <div class="games-scroll" id="games-scroll">
+                    <!-- Se llena con JS -->
+                </div>
+            </div>
+            
+            <!-- Footer tipo Pokédex -->
+            <div class="card-footer">
+                <div class="footer-buttons">
+                    <button class="footer-btn compare-btn">
+                        <i class="fas fa-balance-scale"></i>
+                        COMPARAR
+                    </button>
+                    <button class="footer-btn favorite-btn">
+                        <i class="far fa-star"></i>
+                        FAVORITO
+                    </button>
+                    <button class="footer-btn share-btn">
+                        <i class="fas fa-share-alt"></i>
+                        COMPARTIR
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <script src="./js/details.js"></script>
+</body>
+</html>
