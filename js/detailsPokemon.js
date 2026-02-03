@@ -112,12 +112,14 @@ function displayPokemonInformation(pokemon) {
     const abilityElement = document.getElementById('ability-value');
     const genderElement = document.getElementById('gender-icons');
     const soundBtn = document.getElementById('sound-btn');
+    const title = document.getElementById('title-pokemon');
 
     let tipos = pokemon.types.map(type => 
         `<div class="${type.type.name}">${type.type.name}</div>`
         ).join('');
 
     const currentId = document.getElementById('current-id');
+    title.textContent = `Pokemon || ${pokemon.name}`
     pokemonNameElement.textContent = `${pokemon.name} #${pokemon.id}`;
     currentId.textContent = pokemon.id;
     pokemonImgElement.src = pokemon.sprites.other['official-artwork'].front_default;
@@ -147,7 +149,15 @@ function displayPokemonInformation(pokemon) {
     categoryElement.textContent = pokemon.category;
     abilityElement.textContent = pokemon.abilities.map(ability => ability.ability.name).join(', ');
     genderElement.innerHTML = getGenderIcon(pokemon.gender_rate);
-}
+    
+
+    if (typeof createStatsChart === 'function') {
+        // Pasar solo los datos necesarios
+        createStatsChart(pokemon.stats, pokemon.name);
+    } else {
+        console.log('⚠️ chartStats.js no está cargado o createStatsChart no existe');
+    }
+    }
 
 function setupNavigationButtons() {
     const prevButton = document.getElementById('prev-btn');

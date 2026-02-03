@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/details-pokemon.css">
     <link rel="stylesheet" href="./css/main.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-   <title>Pokemon</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/fav-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title id="title-pokemon"></title>
 
 </head>
 <body>
@@ -128,9 +130,12 @@
     </div>
 
    <div class="more-information">
+
         <div class="estadisticas">
             <h3><i class="fa-solid fa-chart-line"></i> Stats</h3>
-            <div class="stats-grid" id="stats-container"></div>
+            <div class="chart-container" style="height: 400px;">
+                <canvas id="stats-chart"></canvas>
+            </div>
         </div>
 
         <div class="debilidades">
@@ -145,5 +150,6 @@
 <script src="./js/detailsPokemon.js"></script>
 <script src="./js/menu.js"></script>
 <script src="./js/theme.js"></script>
+<script src="./js/statchart.js"></script>
 </body>
 </html>

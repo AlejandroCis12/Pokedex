@@ -1,282 +1,19 @@
-/* Animaciones para el sonido */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
+/* ============================================
+   VARIABLES Y RESET
+   ============================================ */
 
-#sound-btn:active {
-    animation: pulse 0.2s ease;
-}
-.more-information {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-top: 30px;
-    width: 100%;
-}
-
-.estadisticas,
-.debilidades {
-    padding: 25px;
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-}
-
-.estadisticas h3,
-.debilidades h3 {
-    color: var(--text-color);
-    font-size: 22px;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 3px solid var(--primary-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.estadisticas h3 i {
-    color: var(--primary-color);
-}
-
-.debilidades h3 i {
-    color: var(--accent-color);
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-}
-
-.weakness-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.weakness-info {
+.chart-container {
+    position: relative;
     margin-top: 20px;
-    padding: 12px 15px;
-    background: rgba(239, 83, 80, 0.1);
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-color);
-    font-size: 13px;
-    color: var(--text-secondary);
 }
 
-.weakness-info i {
-    color: var(--accent-color);
-    margin-right: 8px;
-}
-
+/* Responsive para móviles */
 @media (max-width: 768px) {
-    .weakness-container {
-        grid-template-columns: repeat(2, 1fr);
+    .chart-container {
+        height: 300px !important;
     }
 }
-
-@media (max-width: 480px) {
-    .weakness-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-}
-
-[data-theme="dark"] .estadisticas,
-[data-theme="dark"] .debilidades {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-}
-
-[data-theme="dark"] .weakness-info {
-    background: rgba(239, 83, 80, 0.05);
-}
-
-main {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 20px;
-}
-
-.pokemon-information {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
-}
-
-/* Imagen grande y centrada */
-.pokemon-imag {
-    flex: 1;
-    text-align: center;
-    padding: 20px;
-}
-
-.pokemon-imag img {
-    width: 100%;
-    max-width: 1000px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    background-color: var(--id-back-color);
-}
-
-/* Detalles al lado */
-.pokemon-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-/* Descripción simple */
-.description {
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--text-color);
-    padding: 20px;
-    background: var(--card-bg);
-    border-radius: 10px;
-    border-left: 4px solid var(--primary-color);
-    box-shadow: var(--shadow);
-}
-
-/* Tipos - usando tus clases existentes */
-.types {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-/* Clases de tipos (ya las tienes, solo organizo) */
-.types > div {
-    padding: 12px 25px;
-    border-radius: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: white;
-    text-align: center;
-    min-width: 110px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* Información organizada */
-.information {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 25px;
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-}
-
-.info-item {
-    padding: 15px;
-    border-radius: 8px;
-    background: var(--stat-bg);
-}
-
-.info-label {
-    display: block;
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-.info-value {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--text-color);
-}
-
-/* Género con iconos */
-.gender-icons {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.gender-icons i {
-    font-size: 24px;
-}
-
-.gender-icons .fa-mars {
-    color: #3498db;
-}
-
-.gender-icons .fa-venus {
-    color: #e74c3c;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-    .pokemon-information {
-        flex-direction: column;
-        gap: 30px;
-    }
-    
-    .pokemon-imag img {
-        max-width: 400px;
-    }
-    
-    .information {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    main {
-        padding: 0 15px;
-    }
-    
-    .pokemon-imag img {
-        max-width: 300px;
-    }
-    
-    .description {
-        font-size: 16px;
-        padding: 15px;
-    }
-    
-    .types {
-        justify-content: center;
-    }
-    
-    .types > div {
-        padding: 10px 20px;
-        min-width: 100px;
-        font-size: 14px;
-    }
-    
-    .info-item {
-        padding: 12px;
-    }
-    
-    .info-label {
-        font-size: 13px;
-    }
-    
-    .info-value {
-        font-size: 16px;
-    }
-}
-
-/* Modo oscuro ajustes */
-[data-theme="dark"] .description,
-[data-theme="dark"] .information {
-    background: var(--card-bg);
-    border-color: var(--border-color);
-}
-
-[data-theme="dark"] .info-item {
-    background: var(--stat-bg);
-}
+   
 :root {
     --bg-color: #f8f9fa;
     --card-bg: #ffffff;
@@ -314,7 +51,7 @@ main {
     --id-back-color: rgba(66, 66, 66, 0.3);
 }
 
-*,main {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -327,6 +64,9 @@ body {
     color: var(--text-color);
 }
 
+/* ============================================
+   HEADER POKÉDEX
+   ============================================ */
 .pokedex-header {
     max-width: 1200px;
     margin: 0 auto 30px;
@@ -365,13 +105,13 @@ body {
 }
 
 .dex-screen {
-    background: var(--screen-bg);
+    background: #8B0000;
     border: 5px solid #000;
     border-radius: 10px;
     padding: 20px;
 }
 
-.name-poke{
+.name-poke {
     font-size: 50px;
     font-weight: bold;
     text-transform: capitalize;
@@ -402,6 +142,7 @@ body {
     text-transform: uppercase;
     font-size: 14px;
     transition: all 0.2s;
+    text-decoration: none;
 }
 
 .dex-button:hover {
@@ -451,7 +192,7 @@ body {
 .counter-label {
     font-size: 12px;
     margin-top: 5px;
-    color: var(--pokemon-gray);
+    color: #888;
 }
 
 .prev-btn, .next-btn {
@@ -463,18 +204,323 @@ body {
 }
 
 .theme-btn {
-    background: var(--pokemon-gray);
+    background: #666;
     width: 50px;
     height: 50px;
     padding: 0;
     justify-content: center;
+    border: none;
 }
 
+/* ============================================
+   CONTENIDO PRINCIPAL
+   ============================================ */
+main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
 
+.pokemon-information {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
 
+/* Imagen del Pokémon */
+.pokemon-imag {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    background: var(--id-back-color);
+    border-radius: 10px;
+}
 
+.pokemon-imag img {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
 
-/* TABLETS (hasta 1024px) */
+/* Detalles del Pokémon */
+.pokemon-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-color);
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: var(--shadow);
+}
+
+/* Tipos de Pokémon */
+.types {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.types > div {
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    min-width: 110px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Información básica */
+.information {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.info-item {
+    padding: 15px;
+    border-radius: 8px;
+    background: var(--stat-bg);
+}
+
+.info-label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Género */
+.gender-icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.gender-icons i {
+    font-size: 24px;
+}
+
+.gender-icons .fa-mars {
+    color: #3498db;
+}
+
+.gender-icons .fa-venus {
+    color: #e74c3c;
+}
+
+.gender-icons .fa-genderless {
+    color: #666;
+}
+
+/* ============================================
+   ESTADÍSTICAS Y DEBILIDADES (NUEVA SECCIÓN)
+   ============================================ */
+.more-information {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.estadisticas,
+.debilidades {
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.estadisticas h3,
+.debilidades h3 {
+    color: var(--text-color);
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.estadisticas h3 i {
+    color: var(--primary-color);
+}
+
+.debilidades h3 i {
+    color: var(--accent-color);
+}
+
+/* Estadísticas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.stat-item {
+    background: var(--stat-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-name {
+    font-weight: bold;
+    text-transform: capitalize;
+    min-width: 80px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.stat-bar {
+    height: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    flex-grow: 1;
+    margin: 0 15px;
+    overflow: hidden;
+}
+
+.stat-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), #64b5f6);
+    border-radius: 5px;
+}
+
+/* Debilidades */
+.weakness-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.weakness-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 5px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-height: 70px;
+    text-align: center;
+}
+
+.weakness-type {
+    font-size: 12px;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.weakness-multiplier {
+    font-size: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 800;
+}
+
+/* Colores para multiplicadores */
+.multiplier-4x { background: linear-gradient(135deg, #ff4444, #cc0000); }
+.multiplier-2x { background: linear-gradient(135deg, #ff6b6b, #ff4444); }
+.multiplier-1x { background: linear-gradient(135deg, #90CAF9, #42A5F5); }
+.multiplier-0-5x { background: linear-gradient(135deg, #81C784, #4CAF50); }
+.multiplier-0-25x { background: linear-gradient(135deg, #66BB6A, #2E7D32); }
+.multiplier-0x { 
+    background: linear-gradient(135deg, #9E9E9E, #616161);
+    color: #ddd;
+}
+
+.weakness-info {
+    margin-top: 20px;
+    padding: 12px 15px;
+    background: rgba(239, 83, 80, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.weakness-info i {
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+/* ============================================
+   ANIMACIONES Y EFECTOS
+   ============================================ */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#sound-btn:active {
+    animation: pulse 0.2s ease;
+}
+
+/* Solo animar en desktop */
+@media (min-width: 769px) {
+    .red-light {
+        animation: blink 2s infinite;
+    }
+    
+    .yellow-light {
+        animation: blink 2s infinite 0.5s;
+    }
+    
+    .green-light {
+        animation: blink 2s infinite 1s;
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet (768px - 1024px) */
 @media (max-width: 1024px) {
     .pokedex-header {
         margin: 0 20px 20px;
@@ -509,16 +555,61 @@ body {
         height: 45px;
         font-size: 20px;
     }
+    
+    .pokemon-imag img {
+        max-width: 600px;
+    }
+    
+    .weakness-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-@media (max-width: 768px) {
+/* Mobile Grande (600px - 768px) */
+@media (max-width: 900px) {
+    .pokemon-information {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .pokemon-imag img {
+        max-width: 400px;
+    }
+    
+    .information {
+        grid-template-columns: 1fr;
+    }
+    
+    .more-information {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .weakness-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mobile Pequeño (480px - 600px) */
+@media (max-width: 600px) {
     body {
         padding: 10px;
+        font-size: 14px;
+    }
+    
+    main {
+        padding: 0 15px;
     }
     
     .pokedex-header {
         margin: 0 10px 15px;
         padding: 12px;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .dex-screen {
+        padding: 12px;
+        border-width: 3px;
     }
     
     .name-poke {
@@ -539,6 +630,10 @@ body {
         justify-content: center;
     }
     
+    .back-btn span {
+        display: inline;
+    }
+    
     .dex-controls {
         width: 100%;
         justify-content: space-between;
@@ -555,22 +650,99 @@ body {
         flex-shrink: 0;
     }
     
+    .theme-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .pokemon-imag img {
+        max-width: 300px;
+    }
+    
+    .description {
+        font-size: 16px;
+        padding: 15px;
+    }
+    
+    .types {
+        justify-content: center;
+    }
+    
+    .types > div {
+        padding: 10px 20px;
+        min-width: 100px;
+        font-size: 14px;
+    }
+    
+    .info-item {
+        padding: 12px;
+    }
+    
+    .info-label {
+        font-size: 13px;
+    }
+    
+    .info-value {
+        font-size: 16px;
+    }
+    
+    .estadisticas,
+    .debilidades {
+        padding: 20px;
+    }
+    
+    .estadisticas h3,
+    .debilidades h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .stats-grid {
+        gap: 10px;
+    }
+    
+    .stat-item {
+        padding: 12px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    
+    .stat-bar {
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    .weakness-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .weakness-item {
+        min-height: 60px;
+        padding: 10px 5px;
+    }
+    
+    .weakness-type {
+        font-size: 11px;
+    }
+    
+    .weakness-multiplier {
+        font-size: 14px;
+        padding: 2px 8px;
+    }
+    
     .red-light, .yellow-light, .green-light {
         width: 15px;
         height: 15px;
     }
 }
 
+/* Mobile Muy Pequeño (hasta 480px) */
 @media (max-width: 480px) {
-    .pokedex-header {
-        border-radius: 8px 8px 0 0;
-        padding: 10px;
-        margin: 0 5px 10px;
-    }
-    
-    .dex-screen {
-        padding: 12px;
-        border-width: 3px;
+    main {
+        padding: 0 10px;
     }
     
     .name-poke {
@@ -617,7 +789,23 @@ body {
         justify-content: center;
         margin-bottom: 10px;
     }
+    
+    .pokemon-imag img {
+        max-width: 250px;
+    }
+    
+    .estadisticas,
+    .debilidades {
+        padding: 15px;
+    }
+    
+    .estadisticas h3,
+    .debilidades h3 {
+        font-size: 18px;
+    }
 }
+
+/* Mobile Extra Pequeño (hasta 360px) */
 @media (max-width: 360px) {
     .name-poke {
         font-size: 18px;
@@ -644,50 +832,29 @@ body {
     .counter-screen {
         font-size: 16px;
     }
+    
+    .weakness-container {
+        grid-template-columns: 1fr;
+    }
 }
 
-
-
-/* Asegurar que las imágenes sean responsivas */
+/* ============================================
+   UTILIDADES Y AJUSTES ESPECIALES
+   ============================================ */
 img {
     max-width: 100%;
     height: auto;
 }
 
-/* Mejorar la legibilidad en móviles */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-        line-height: 1.4;
-    }
-    
-    h1, h2, h3 {
-        line-height: 1.2;
-    }
-}
-
-
-@media (max-width: 768px) {
-    main {
-        padding: 0 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    main {
-        padding: 0 10px;
-    }
-}
-
-/* Mejorar los botones para touch en móviles */
+/* Touch optimization */
 @media (hover: none) and (pointer: coarse) {
     .dex-button {
-        min-height: 44px; /* Tamaño mínimo para touch */
+        min-height: 44px;
         min-width: 44px;
     }
     
     .dex-button:hover {
-        transform: none; /* Desactivar hover en touch */
+        transform: none;
     }
     
     .dex-button:active {
@@ -696,14 +863,7 @@ img {
     }
 }
 
-/* Ajustar animaciones para rendimiento móvil */
-@media (max-width: 768px) {
-    .red-light, .yellow-light, .green-light {
-        animation: none; /* Desactivar animaciones en móviles para mejor rendimiento */
-    }
-}
-
-/* Orientación horizontal en móviles */
+/* Landscape mode */
 @media (max-height: 500px) and (orientation: landscape) {
     .pokedex-header {
         margin-bottom: 15px;
@@ -724,98 +884,38 @@ img {
         padding: 5px 10px;
         font-size: 11px;
     }
+    
+    .pokemon-information {
+        flex-direction: row;
+    }
+    
+    .pokemon-imag img {
+        max-width: 200px;
+    }
 }
 
-/* Dark mode adjustments for mobile */
+/* Modo oscuro ajustes específicos */
 [data-theme="dark"] .dex-screen {
-    background: #6AA052; /* Un verde más oscuro para modo oscuro */
+    background: #6AA052;
 }
 
-/* Asegurar que los inputs sean legibles en móviles */
+[data-theme="dark"] .description,
+[data-theme="dark"] .information,
+[data-theme="dark"] .estadisticas,
+[data-theme="dark"] .debilidades {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .info-item {
+    background: var(--stat-bg);
+}
+
+[data-theme="dark"] .weakness-info {
+    background: rgba(239, 83, 80, 0.05);
+}
+
+/* Prevenir zoom en iOS */
 input, select, textarea {
-    font-size: 16px; /* Previene zoom en iOS */
-}
-
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-/* Solo animar en dispositivos que no sean móviles */
-@media (min-width: 769px) {
-    .red-light {
-        animation: blink 2s infinite;
-    }
-    
-    .yellow-light {
-        animation: blink 2s infinite 0.5s;
-    }
-    
-    .green-light {
-        animation: blink 2s infinite 1s;
-    }
-}
-
-
-/* Clases helper para ocultar/mostrar elementos */
-.hide-on-mobile {
-    display: block;
-}
-
-.show-on-mobile {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .hide-on-mobile {
-        display: none;
-    }
-    
-    .show-on-mobile {
-        display: block;
-    }
-}
-
-/* Grid responsivo para contenido futuro */
-.pokemon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-@media (max-width: 768px) {
-    .pokemon-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .pokemon-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-    }
-}
-
-/* Flexbox utilities */
-.flex-responsive {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-@media (max-width: 768px) {
-    .flex-responsive {
-        flex-direction: column;
-        gap: 15px;
-    }
-}
-
-/* Spacing responsive */
-@media (max-width: 768px) {
-    .spacing-mobile {
-        margin: 10px 0;
-        padding: 10px;
-    }
+    font-size: 16px;
 }
