@@ -1,6 +1,100 @@
-/* ============================================
-   DISEÑO SIMPLE Y FUNCIONAL
-   ============================================ */
+/* Animaciones para el sonido */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#sound-btn:active {
+    animation: pulse 0.2s ease;
+}
+.more-information {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.estadisticas,
+.debilidades {
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.estadisticas h3,
+.debilidades h3 {
+    color: var(--text-color);
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.estadisticas h3 i {
+    color: var(--primary-color);
+}
+
+.debilidades h3 i {
+    color: var(--accent-color);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.weakness-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.weakness-info {
+    margin-top: 20px;
+    padding: 12px 15px;
+    background: rgba(239, 83, 80, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.weakness-info i {
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .weakness-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .weakness-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+}
+
+[data-theme="dark"] .estadisticas,
+[data-theme="dark"] .debilidades {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .weakness-info {
+    background: rgba(239, 83, 80, 0.05);
+}
 
 main {
     max-width: 1200px;
@@ -27,6 +121,7 @@ main {
     height: auto;
     display: block;
     margin: 0 auto;
+    background-color: var(--id-back-color);
 }
 
 /* Detalles al lado */
