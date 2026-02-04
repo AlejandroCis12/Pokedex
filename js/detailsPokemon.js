@@ -101,6 +101,7 @@ function playPokemonCry(pokemonId, cryUrl = null) {
     }
 }
 
+
 function displayPokemonInformation(pokemon) {
     const pokemonNameElement = document.getElementById('pokemon-name');
     const pokemonImgElement = document.getElementById('pokemon-imag').querySelector('img');
@@ -117,7 +118,7 @@ function displayPokemonInformation(pokemon) {
     let tipos = pokemon.types.map(type => 
         `<div class="${type.type.name}">${type.type.name}</div>`
         ).join('');
-
+    const pokemonTypes = pokemon.types.map(type => type.type.name);
     const currentId = document.getElementById('current-id');
     title.textContent = `Pokemon || ${pokemon.name}`
     pokemonNameElement.textContent = `${pokemon.name} #${pokemon.id}`;
@@ -130,7 +131,16 @@ function displayPokemonInformation(pokemon) {
         descriptionElement.textContent = "No description available";
     }
 
-
+    if (typeof calculateWeaknesses === 'function') {
+        const weaknesses = calculateWeaknesses(pokemonTypes);
+        
+        // 3. Mostrar en el DOM
+        if (typeof displayWeaknesses === 'function') {
+            displayWeaknesses(weaknesses);
+        } else {
+            console.warn('displayWeaknesses no está disponible');
+        }
+    }
     if (soundBtn) {
     soundBtn.addEventListener('click', () => {
         playPokemonCry(pokemon.id, pokemon.cryUrl);

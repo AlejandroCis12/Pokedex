@@ -7,6 +7,88 @@
     margin-top: 20px;
 }
 
+.debilidades {
+    height: 260px;
+    text-align: center;
+}
+
+/* Agrega a tu CSS existente */
+#weakness-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.weakness-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    min-height: 70px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.weakness-type {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.weakness-multiplier {
+    font-size: 16px;
+    background: rgba(0,0,0,0.2);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 800;
+}
+
+/* Colores para 4x y 2x */
+.weakness-item .weakness-multiplier {
+    background: rgba(0,0,0,0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #weakness-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .weakness-item {
+        min-height: 60px;
+        padding: 8px 5px;
+    }
+    
+    .weakness-type {
+        font-size: 11px;
+    }
+    
+    .weakness-multiplier {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    #weakness-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mensaje cuando no hay debilidades */
+.no-weakness {
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+    grid-column: 1 / -1;
+}
+
 /* Responsive para móviles */
 @media (max-width: 768px) {
     .chart-container {
