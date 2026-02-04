@@ -2,6 +2,114 @@
    VARIABLES Y RESET
    ============================================ */
 
+/* Agrega a tu CSS existente */
+.evolution-container {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.evolution-container h3 {
+    color: var(--text-color);
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.evolution-chain {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.evolution-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 100px;
+}
+
+.evolution-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: var(--id-back-color);
+    border-radius: 50%;
+    padding: 8px;
+    margin-bottom: 8px;
+    transition: transform 0.2s;
+}
+
+.evolution-img:hover {
+    transform: scale(1.1);
+}
+
+.evolution-name {
+    font-weight: bold;
+    color: var(--text-color);
+    text-transform: capitalize;
+    font-size: 14px;
+}
+
+.evolution-arrow {
+    color: var(--text-secondary);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Para cadenas largas (más de 3 evoluciones) */
+.evolution-chain-long {
+    flex-direction: column;
+    align-items: center;
+}
+
+.evolution-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .evolution-chain {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .evolution-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .evolution-img {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .evolution-container {
+        padding: 15px;
+    }
+    
+    .evolution-img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .evolution-name {
+        font-size: 12px;
+    }
+}
+
 .chart-container {
     position: relative;
     margin-top: 20px;
@@ -443,7 +551,6 @@ main {
     font-size: 22px;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 3px solid var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 1px;
     display: flex;

@@ -11,7 +11,13 @@ async function fetchPokemonData() {
         
         // 2. Obtener datos de la especie para la categoría
         const speciesResponse = await fetch(pokemonData.species.url);
-        const speciesData = await speciesResponse.json();   
+        const speciesData = await speciesResponse.json();
+        
+           if (speciesData.evolution_chain && speciesData.evolution_chain.url) {
+            if (typeof displayEvolutionChain === 'function') {
+                await displayEvolutionChain(speciesData.evolution_chain.url);
+            }
+        }
 
         // 3. Encontrar la categoría en inglés
         const englishGenus = speciesData.genera.find(g => g.language.name === 'en');
@@ -118,9 +124,11 @@ function displayPokemonInformation(pokemon) {
     let tipos = pokemon.types.map(type => 
         `<div class="${type.type.name}">${type.type.name}</div>`
         ).join('');
+    
     const pokemonTypes = pokemon.types.map(type => type.type.name);
     const currentId = document.getElementById('current-id');
-    title.textContent = `Pokemon || ${pokemon.name}`
+    
+    title.textContent = `Pokemon || ${pokemon.name}`;
     pokemonNameElement.textContent = `${pokemon.name} #${pokemon.id}`;
     currentId.textContent = pokemon.id;
     pokemonImgElement.src = pokemon.sprites.other['official-artwork'].front_default;
@@ -131,26 +139,27 @@ function displayPokemonInformation(pokemon) {
         descriptionElement.textContent = "No description available";
     }
 
+    // Mostrar debilidades
     if (typeof calculateWeaknesses === 'function') {
         const weaknesses = calculateWeaknesses(pokemonTypes);
         
-        // 3. Mostrar en el DOM
         if (typeof displayWeaknesses === 'function') {
             displayWeaknesses(weaknesses);
         } else {
             console.warn('displayWeaknesses no está disponible');
         }
     }
-    if (soundBtn) {
-    soundBtn.addEventListener('click', () => {
-        playPokemonCry(pokemon.id, pokemon.cryUrl);
-    });
     
-    // Opcional: cambiar icono si no hay sonido
-    if (!pokemon.cries) {
-        soundBtn.disabled = true;
-        soundBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-    }
+    // Configurar botón de sonido
+    if (soundBtn) {
+        soundBtn.addEventListener('click', () => {
+            playPokemonCry(pokemon.id, pokemon.cryUrl);
+        });
+        
+        if (!pokemon.cries) {
+            soundBtn.disabled = true;
+            soundBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+        }
     }
 
     typeElement.innerHTML = tipos;
@@ -160,14 +169,14 @@ function displayPokemonInformation(pokemon) {
     abilityElement.textContent = pokemon.abilities.map(ability => ability.ability.name).join(', ');
     genderElement.innerHTML = getGenderIcon(pokemon.gender_rate);
     
-
+    // Mostrar gráfico de stats
     if (typeof createStatsChart === 'function') {
-        // Pasar solo los datos necesarios
         createStatsChart(pokemon.stats, pokemon.name);
     } else {
         console.log('⚠️ chartStats.js no está cargado o createStatsChart no existe');
     }
-    }
+
+}
 
 function setupNavigationButtons() {
     const prevButton = document.getElementById('prev-btn');
@@ -186,6 +195,8 @@ function setupNavigationButtons() {
         event.preventDefault();
         window.location.href = nextButton.href;
     });
+
+    
 }
 
 setupNavigationButtons();
